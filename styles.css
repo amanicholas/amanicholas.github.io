@@ -10,14 +10,14 @@ h1 {
     padding: 0.3em;
     background: rgb(55, 126, 127);
     color: rgb(250, 253, 253);    
-    font: lighter 60px 'Ubuntu',Tahoma,sans-serif;
+    font: lighter 45px 'Ubuntu',Tahoma,sans-serif;
     box-shadow: 5px 5px 7px #aaa;
 }
 
 h2 {
     margin: 1em 0 0.25em;
-    padding-bottom: 0.5em;
-    font-weight: 300;   
+    font-weight: 350;  
+    font-size: 19px 
 }
 
 h2:first-of-type {
@@ -33,7 +33,7 @@ td {
 
 table {
     border-collapse: collapse;
-    margin: 1em auto;
+    margin: 0.3em auto;
     background: white;
 }
 
@@ -47,13 +47,12 @@ td {
 
 /* Form */
 #size-picker {
-    font-weight: lighter;
-    font-size: 0.8em;
+    font: 500 12px system-ui ;
 }
 
 input[type=number] {
     width: 6em;
-    padding-top: 0.6em;
+    padding-top: 0.2em;
     margin-right: 2em;
     box-sizing: border-box;
     border: 1px solid rgb(218, 218, 218);
@@ -63,8 +62,6 @@ input[type=number] {
 /* Content */
 #container {
     width: 100%;
-    padding: 0.5em;
-    margin-top: 1em;
     min-height: 35em;
     color: rgb(51,51,51);  
 }
@@ -81,12 +78,13 @@ button,
     -webkit-transition-duration: 0.4s;
     background: transparent;
     color: rgb(55, 126, 127);
-    padding-top: 0.4em;
+    padding-top: 0.2em;
     width: 5em;
     margin-left: 1em;
+    margin-top: 1em;
     cursor: pointer;
-    font-size: 11px;
-    border-color: rgb(218, 218, 218);
+    font: 500 11px system-ui ;
+    border-color: rgb(201, 201, 201);
 
 }
 
