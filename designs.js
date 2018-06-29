@@ -83,7 +83,7 @@ function makeGrid() {
             $('tr').remove();
             $('.button').remove();
             $('#size-picker')[0].reset();
-            
+            $('#color-picker').val('#000000');
         });
     });
 }
