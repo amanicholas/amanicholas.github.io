@@ -1,3 +1,22 @@
+function createTable(table,gridHeight,gridWidth,oldHeight){
+    //Remove a row if new height is less than old height 
+    for (let i = 0; i < Math.abs(gridHeight - oldHeight); i++){
+        if (gridHeight - oldHeight < 0){
+            $(table).find('tr').last().remove();
+        }
+        //Add row(s)
+        else {
+            const newRow = $('<tr></tr>');
+            newRow.appendTo(table);
+            console.log("appended row "+ i);
+
+            //Append cells to form row
+            for (let j = 0; j < gridWidth; j++) {
+                $('<td></td>').appendTo(newRow);
+            } 
+        }
+    }
+}
 
 function compareColors(color1, color2) {
     // Create a dummy element to assign colors to.
@@ -15,62 +34,55 @@ function compareColors(color1, color2) {
 }
 
 function makeGrid() {
-   
+    let oldHeight = 0;
+    let oldWidth = 0;
+
     $('#submit').click(function(event) {
         //Prevent default click action
+        
         event.preventDefault();
-
+        
         //Get the values of the grid height and width from the input box
+
         const gridHeight = $('#input-height').val();
         const gridWidth = $('#input-width').val();
+
+        if (isNaN(gridHeight) || isNaN(gridWidth)){
+            return;
+        }
         const table = $('#pixel-canvas');
         const buttons = $('#buttons');
-        
-        //Remove existing table if any
-        if ((table.is(':empty')) === false) {
-            table.empty();
-        }
-        
+ 
         //Create reset and clear buttons 
         if ($('.button').length == 0) {
-            const clear = $('<span title="Clear grid"><button type="button" '+
-            'id = "clear" class = "button">Clear</button></span');
-            const reset = $('<span title="Reset canvas space"><button type="button" '+
-            'id = "reset" class = "button">Reset</button></span>');
+            const clear = $('<span title="Clear grid"><button type="button" id = "clear" class = "button">Clear</button></span');
+            const reset = $('<span title="Reset canvas space"><button type="button" id = "reset" class = "button">Reset</button></span>');
             clear.appendTo(buttons);
             reset.appendTo(buttons);
             console.log("appended buttons");
         }
-      
-        //Create grid
-        for (let i = 0; i < gridHeight; i++) {
-            //Append row to table tag
-            const row = $('<tr></tr>');
-            row.appendTo(table);
-            console.log("appended row "+ i);
 
-            //Append cells to form row
-            for (let j = 0; j < gridWidth; j++) {
-                const cell = $('<td></td>');
-                cell.appendTo(row);
-            }
-        }
-        
-        //Change background color of cell when cell is clicked
-        $('td').click(function() { 
-            const color = $('#color-picker').val();
-            const colorCompare = compareColors($(this).css('background-color'),color);
+        //Check if a table exists  
+        if (($('tr').is(':empty')) === false) {
+            
+            //Alter the width
+            $('tr').each(function() {
+                oldWidth = $(this).find('td').length;
+                for (let i = 0; i < Math.abs(gridWidth - oldWidth); i++){
+                    if (gridWidth - oldWidth > 0) $('<td></td>').appendTo($(this));
+                    else $(this).find('td').last().remove();
+                }
+            });
 
-            //Check if cell is styled and if cell color is same as color picker color
-            if ($(this).attr('style') && colorCompare == true) {
-                $(this).removeAttr('style');
-            } else {
-                $(this).attr('style', 'background-color:'+color);
-            }
-        });
-
+            //Alter the height
+            oldHeight = $('tr').length;
+            createTable(table,gridHeight,gridWidth,oldHeight);      
+        }  
+        //Create new table
+        else createTable(table,gridHeight,gridWidth,oldHeight);
+    
         //Remove style from grid when 'clear' is clicked
-        $('#clear').click(function() {
+        $('#clear').on('click',function() {
             $('td').each(function() {
                 if ($(this).attr('style')) {
                     $(this).removeAttr('style');
@@ -79,15 +91,26 @@ function makeGrid() {
         });
         
         //Remove grid when 'reset' is clicked
-        $('#reset').click(function() {
+        $('#reset').on('click',function() {
             $('tr').remove();
             $('.button').remove();
-            $('#size-picker')[0].reset();
-            $('#color-picker').val('#000000');
+            $('#size-picker')[0].reset();  
+            console.log(table.is(':empty'));
         });
-    });
+  });  
 }
-$(makeGrid);
 
-    
-    
+//Change background color of cell when cell is clicked
+$('#pixel-canvas').on('click','td',function() { 
+    const color = $('#color-picker').val();
+    const colorCompare = compareColors($(this).css('background-color'),color);
+
+    //Check if cell is styled and if cell color is same as color picker color
+    if ($(this).attr('style') && colorCompare == true) {
+        $(this).removeAttr('style');
+    } else {
+        $(this).attr('style', 'background-color:'+color);
+    }
+});
+
+$(makeGrid());
